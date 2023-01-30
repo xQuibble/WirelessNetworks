@@ -11,7 +11,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
+
 
 public class WWarning extends WWidget {
 
@@ -49,25 +50,6 @@ public class WWarning extends WWidget {
     @Environment(EnvType.CLIENT)
     public void renderTooltipBackground(MatrixStack matrices, int x, int y, int width, int height) {
         matrices.push();
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-        fillGradient(matrix4f, bufferBuilder, x - 3, y - 4, x + width + 3, y - 3, 400, -267386864, -267386864);
-        fillGradient(matrix4f, bufferBuilder, x - 3, y + height + 3, x + width + 3, y + height + 4, 400, -267386864, -267386864);
-        fillGradient(matrix4f, bufferBuilder, x - 3, y - 3, x + width + 3, y + height + 3, 400, -267386864, -267386864);
-        fillGradient(matrix4f, bufferBuilder, x - 4, y - 3, x - 3, y + height + 3, 400, -267386864, -267386864);
-        fillGradient(matrix4f, bufferBuilder, x + width + 3, y - 3, x + width + 4, y + height + 3, 400, -267386864, -267386864);
-        fillGradient(matrix4f, bufferBuilder, x - 3, y - 3 + 1, x - 3 + 1, y + height + 3 - 1, 400, 1347420415, 1344798847);
-        fillGradient(matrix4f, bufferBuilder, x + width + 2, y - 3 + 1, x + width + 3, y + height + 3 - 1, 400, 1347420415, 1344798847);
-        fillGradient(matrix4f, bufferBuilder, x - 3, y - 3, x + width + 3, y - 3 + 1, 400, 1347420415, 1347420415);
-        fillGradient(matrix4f, bufferBuilder, x - 3, y + height + 2, x + width + 3, y + height + 3, 400, 1344798847, 1344798847);
-        RenderSystem.enableDepthTest();
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
-        BufferRenderer.drawWithShader(bufferBuilder.end());
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
@@ -75,7 +57,8 @@ public class WWarning extends WWidget {
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         if (bgWidth == textRenderer.getWidth(text == null ? "" : text.getString())) {
-            textRenderer.draw(text, x, y, -1, true, matrix4f, immediate, false, 0, 15728880);
+            textRenderer.draw(matrices, text, x,y, 15728880);
+            //textRenderer.draw(text, x, y, -1, true, matrix4f, immediate, false, 0, 15728880);
         }
         immediate.draw();
         matrices.pop();
@@ -91,9 +74,9 @@ public class WWarning extends WWidget {
         float k = (float)(colorEnd >> 16 & 255) / 255.0F;
         float l = (float)(colorEnd >> 8 & 255) / 255.0F;
         float m = (float)(colorEnd & 255) / 255.0F;
-        bufferBuilder.vertex(matrix, (float)xEnd, (float)yStart, (float)z).color(g, h, i, f).next();
+       /* bufferBuilder.vertex(matrix, (float)xEnd, (float)yStart, (float)z).color(g, h, i, f).next();
         bufferBuilder.vertex(matrix, (float)xStart, (float)yStart, (float)z).color(g, h, i, f).next();
         bufferBuilder.vertex(matrix, (float)xStart, (float)yEnd, (float)z).color(k, l, m, j).next();
-        bufferBuilder.vertex(matrix, (float)xEnd, (float)yEnd, (float)z).color(k, l, m, j).next();
+        bufferBuilder.vertex(matrix, (float)xEnd, (float)yEnd, (float)z).color(k, l, m, j).next();*/
     }
 }
